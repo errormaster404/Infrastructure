@@ -8,7 +8,7 @@ Virtualization layer for the infrastructure — hosts all VMs and infrastructure
 - Backup/snapshot strategy notes
 
 ## TODO
-- [ ] Encrypted proxmox - ZFS
+- [x] Encrypted proxmox - ZFS
 - [ ] Document cluster/node layout
 - [ ] Define VM naming convention
 - [ ] Document storage layout (local, ZFS, etc.)

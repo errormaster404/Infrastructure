@@ -78,7 +78,3 @@ flowchart TB
 - **Authentik** — SSO/federation for apps needing OIDC/SAML instead of raw LDAP
 - **Wazuh** — log collection, correlation, alerting, SIEM
 - **PatchMon** — OS patch visibility and management across all hosts
-
-## Open Decisions
-
-See [`decisions/`](./decisions/) for architecture decision records (ADRs) as choices are made (e.g. why Authentik over Keycloak, network segmentation approach, secrets management strategy).

@@ -28,14 +28,12 @@ See [`docs/architecture.md`](./docs/architecture.md) for the full architecture w
 ```
 .
 ├── docs/                 # Architecture docs, diagrams, decisions (ADRs)
-│   └── decisions/
 ├── proxmox/              # VM templates, cloud-init configs
 ├── opnsense/             # Firewall rules, network config exports
 ├── freeipa/              # Domain config, DNS
 ├── authentik/            # Blueprints, provider configs
 ├── wazuh/                # Detection rules, agent configs
 ├── patchmon/             # Patch policies
-├── terraform/            # IaC for Proxmox provisioning
 └── ansible/              # Configuration management playbooks
 ```
 
@@ -54,8 +52,4 @@ See [`docs/architecture.md`](./docs/architecture.md) for the full architecture w
 
 ## Status
 
-🚧 Work in progress. See [GitHub Issues](../../issues) / [Projects](../../projects) for build phase tracking.
-
-## ⚠️ Secrets
-
-Never commit real credentials, private keys, API tokens, or production IP/hostname inventories. See `.gitignore` and consider `sops` or `ansible-vault` for anything sensitive that must be tracked. See [`docs/decisions/`](./docs/decisions/) for the chosen approach.
+🚧 Work in progress.

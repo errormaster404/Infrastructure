@@ -12,6 +12,7 @@ A centralized, secure, and virtualized IT infrastructure built on Proxmox VE, wi
 | **[Authentik](./authentik/)** | Identity federation / SSO layer for apps that don't speak LDAP natively |
 | **[Wazuh](./wazuh/)** | Security monitoring and SIEM — log collection, correlation, threat detection |
 | **[PatchMon](./patchmon/)** | Centralized OS patch management and update tracking |
+| **[NetBox](./netbox/)** | IPAM today (IPv4/IPv6 prefixes, subnets, VRFs) — room to grow into full DCIM/network source-of-truth |
 
 ## Identity & Authentication Flow
 
@@ -34,6 +35,7 @@ See [`docs/architecture.md`](./docs/architecture.md) for the full architecture w
 ├── authentik/            # Blueprints, provider configs
 ├── wazuh/                # Detection rules, agent configs
 ├── patchmon/             # Patch policies
+├── netbox/               # IPAM config, VRF/VLAN layout (future: DCIM)
 └── ansible/              # Configuration management playbooks
 ```
 
@@ -46,6 +48,7 @@ See [`docs/architecture.md`](./docs/architecture.md) for the full architecture w
 - Integration of Linux VMs into the FreeIPA domain
 - Centralized security monitoring / SIEM through Wazuh
 - Centralized OS patch management through PatchMon
+- Centralized IP address management (and future network source-of-truth) through NetBox
 - Reduced reliance on separate per-service credentials
 - Improved visibility and traceability of user activity and security events
 - A modular architecture extensible with future services

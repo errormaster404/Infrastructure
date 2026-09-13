@@ -16,59 +16,44 @@ User → Authentik → FreeIPA
 
 This lets services like PatchMon, Wazuh, and OPNsense use centralized authentication while FreeIPA remains the single source of truth for identity.
 
+**NetBox** supports OIDC/SAML (via `python-social-auth`) in addition to direct LDAP, so it authenticates through **Authentik** just like PatchMon, Wazuh, and OPNsense — no direct-to-FreeIPA exception needed.
+
 ```mermaid
 flowchart LR
     U[User] --> A[Authentik<br/>OIDC / SAML]
-    A -->|LDAP| F[FreeIPA<br/>Identity Provider]
-    A -.SSO.-> P[PatchMon]
-    A -.SSO.-> W[Wazuh]
-    A -.SSO.-> O[OPNsense]
-    F -->|domain join| L1[Linux VM]
-    F -->|domain join| L2[Linux VM]
-    F -->|domain join| L3[Linux VM]
+    F[FreeIPA<br/>Identity Provider] -->|LDAP| A
+    A -->|SSO| SVC
+
+    subgraph SVC["SSO-federated services"]
+        P[PatchMon]
+        W[Wazuh]
+        O[OPNsense]
+        N[NetBox]
+    end
+
+    F -->|domain join| VMS["Linux VMs (FreeIPA domain members)"]
 ```
 
 ## Infrastructure Layers
 
 ```mermaid
 flowchart TB
-    subgraph Virtualization
-        PVE[Proxmox VE]
+    subgraph SVC["Proxmox VE (hosts all VMs)"]
+        OPN["OPNsense<br/>(Firewall)"]
+        WAZ["Wazuh<br/>(Security Monitoring)"]
+        PM["PatchMon<br/>(Patch Management)"]
+        NB["NetBox<br/>(IPAM)"]
     end
-    subgraph Network
-        OPN[OPNsense<br/>Firewall / Segmentation]
-    end
-    subgraph Identity
-        IPA[FreeIPA]
-        AUTH[Authentik]
-    end
-    subgraph Security
-        WAZ[Wazuh SIEM]
-        PM[PatchMon]
-    end
-
-    PVE --> OPN
-    OPN --> IPA
-    OPN --> AUTH
-    OPN --> WAZ
-    OPN --> PM
-    AUTH --> IPA
-    WAZ -.monitors.-> PVE
-    WAZ -.monitors.-> IPA
-    WAZ -.monitors.-> AUTH
-    PM -.patches.-> PVE
 ```
 
 ## Network Segmentation
 
-> TODO: Document VLANs / subnets once OPNsense segmentation is finalized (e.g. management, identity, services, DMZ).
 
 | Segment | Purpose | VLAN | Subnet |
 |---|---|---|---|
-| Management | Proxmox, OPNsense admin | | |
-| Identity | FreeIPA, Authentik | | |
-| Services | PatchMon, Wazuh, apps | | |
-| DMZ | Externally-facing services (if any) | | |
+| Management | Proxmox, OPNsense | 5 | 10.0.5.0/24 |
+| Infrastructure | PatchMon, Wazuh, FreeIPA, Authentik | 10 | 10.0.10.0/24 |
+| Compute | Other VMs | 15 | 10.0.15.0/24 |
 
 ## Component Responsibilities
 
@@ -78,3 +63,5 @@ flowchart TB
 - **Authentik** — SSO/federation for apps needing OIDC/SAML instead of raw LDAP
 - **Wazuh** — log collection, correlation, alerting, SIEM
 - **PatchMon** — OS patch visibility and management across all hosts
+- **NetBox** — IPv4/IPv6 prefix and subnet tracking, VRF/VLAN allocation; planned expansion into DCIM and broader network source-of-truth
+

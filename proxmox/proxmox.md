@@ -35,6 +35,3 @@ After the base install was up and running, ZFS native encryption was applied to 
 - **Passphrase required at boot**: with encryption enabled, the system won't fully start on its own without the passphrase being entered (unless an automatic unlock via a keyfile is configured, with the corresponding security trade-off).
 - **RAM overhead**: ZFS uses RAM for the ARC cache; on systems with limited RAM it may be necessary to cap `zfs_arc_max` to leave enough memory for VMs/LXC.
 
-
-- [x] Proxmox on ZFS -> snapshots and encryption
-- [] Network configuration
